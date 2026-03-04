@@ -1,0 +1,7 @@
+{
+  "tool_name": "mcp__github__create_repository",
+  "tool_input_preview": "{\"name\":\"CodePilot\",\"description\":\"A native desktop GUI client for Claude Code\",\"private\":false,\"autoInit\":false}",
+  "error": "MCP error -32603: Authentication Failed: Bad credentials",
+  "timestamp": "2026-03-04T22:36:57.407Z",
+  "retry_count": 1
+}

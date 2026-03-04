@@ -1,0 +1,12 @@
+
+> codepilot@0.24.0 electron:pack
+> npm run electron:build && electron-builder --config electron-builder.yml
+
+
+> codepilot@0.24.0 electron:build
+> next build && node scripts/build-electron.mjs
+
+
+> Build error occurred
+TypeError: generate is not a function
+    at ignore-listed frames
