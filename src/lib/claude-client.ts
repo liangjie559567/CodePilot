@@ -652,7 +652,7 @@ export function streamClaude(options: ClaudeStreamOptions): ReadableStream<strin
                 type: 'image',
                 source: {
                   type: 'base64',
-                  media_type: img.type || 'image/png',
+                  media_type: (img.type || 'image/png') as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp',
                   data: img.data,
                 },
               });
