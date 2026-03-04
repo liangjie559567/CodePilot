@@ -18,7 +18,9 @@ export class ResultCache {
   set(key: string, result: InferenceResult): void {
     if (this.cache.size >= this.maxSize) {
       const oldestKey = this.cache.keys().next().value;
-      this.cache.delete(oldestKey);
+      if (oldestKey) {
+        this.cache.delete(oldestKey);
+      }
     }
 
     this.cache.set(key, { result, timestamp: Date.now() });
