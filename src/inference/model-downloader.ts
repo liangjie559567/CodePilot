@@ -1,4 +1,3 @@
-import { downloadFile } from '@huggingface/hub';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { ModelConfig, ModelDownloadStatus } from './types';
@@ -22,11 +21,16 @@ export class ModelDownloader {
     this.updateStatus(config.id, 'downloading', 0);
 
     try {
-      await downloadFile({
-        repo: config.huggingfaceRepo,
-        path: 'model.onnx',
-        output: localPath,
-      });
+      // Download from HuggingFace using fetch
+      const url = `https://huggingface.co/${config.huggingfaceRepo}/resolve/main/model.onnx`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`Failed to download: ${response.statusText}`);
+      }
+
+      const buffer = await response.arrayBuffer();
+      await fs.writeFile(localPath, Buffer.from(buffer));
 
       this.updateStatus(config.id, 'completed', 100);
       return localPath;
