@@ -1,5 +1,5 @@
-import { inferenceService, TaskType } from './inference';
-import type { ModelConfig } from './inference';
+import { inferenceService, TaskType } from './index';
+import type { ModelConfig } from './index';
 import path from 'path';
 
 // 初始化模型
