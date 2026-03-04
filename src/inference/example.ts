@@ -1,4 +1,4 @@
-import { inferenceService, TaskType } from './index';
+import { inferenceService, TaskType, ModelTier } from './index';
 import type { ModelConfig } from './index';
 import path from 'path';
 
@@ -8,10 +8,12 @@ export function initializeInferenceModels() {
     id: 'code-embedding-v1',
     name: 'Code Embedding Model',
     path: path.resolve('models/onnx/code-embedding.onnx'),
-    taskType: TaskType.CODE_EMBEDDING,
+    taskTypes: [TaskType.CODE_EMBEDDING],
+    tier: ModelTier.STANDARD,
     inputShape: [1, 512],
     outputShape: [1, 768],
-    quantized: false
+    quantized: false,
+    maxTokens: 512
   };
 
   inferenceService.registerModel(embeddingModel);
