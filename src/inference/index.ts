@@ -1,3 +1,3 @@
 export { inferenceService } from './inference-service';
-export { TaskType } from './types';
+export { TaskType, ModelTier } from './types';
 export type { InferenceRequest, InferenceResult, ModelConfig } from './types';
