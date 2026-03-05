@@ -29,8 +29,8 @@ export class CodeParseService extends EventEmitter {
     this.watcher.stop();
   }
 
-  async parse(code: string, language: string) {
-    return this.parser.parse(code, language);
+  async parse(filePath: string) {
+    return this.parser.parse(filePath);
   }
 }
 
