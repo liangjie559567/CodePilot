@@ -1,25 +1,31 @@
-import { IndexFlatL2 } from 'faiss-node';
-
 export class FAISSIndex {
-  private index: IndexFlatL2;
   private dimension = 768;
+  private vectors: number[][] = [];
   private metadata: Array<{ filePath: string; text: string }> = [];
 
-  constructor() {
-    this.index = new IndexFlatL2(this.dimension);
-  }
-
   add(vector: number[], filePath: string, text: string): void {
-    this.index.add(vector);
+    this.vectors.push(vector);
     this.metadata.push({ filePath, text });
   }
 
   search(query: number[], k = 10): Array<{ filePath: string; text: string; score: number }> {
-    const result = this.index.search(query, k);
-    return result.labels.map((idx, i) => ({
-      ...this.metadata[idx],
-      score: result.distances[i],
-    }));
+    const results: Array<{ filePath: string; text: string; score: number; idx: number }> = [];
+    
+    for (let i = 0; i < this.vectors.length; i++) {
+      const distance = this.euclideanDistance(query, this.vectors[i]);
+      results.push({ ...this.metadata[i], score: distance, idx: i });
+    }
+    
+    results.sort((a, b) => a.score - b.score);
+    return results.slice(0, k).map(({ idx, ...rest }) => rest);
+  }
+
+  private euclideanDistance(a: number[], b: number[]): number {
+    let sum = 0;
+    for (let i = 0; i < a.length; i++) {
+      sum += (a[i] - b[i]) ** 2;
+    }
+    return Math.sqrt(sum);
   }
 
   size(): number {
@@ -27,10 +33,11 @@ export class FAISSIndex {
   }
 
   serialize() {
-    return { metadata: this.metadata };
+    return { vectors: this.vectors, metadata: this.metadata };
   }
 
-  deserialize(data: { metadata: Array<{ filePath: string; text: string }> }) {
+  deserialize(data: { vectors: number[][]; metadata: Array<{ filePath: string; text: string }> }) {
+    this.vectors = data.vectors;
     this.metadata = data.metadata;
   }
 }
