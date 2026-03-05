@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd \\\"C:\\\\Users\\\\ljyih\\\\Desktop\\\\liangjie\\\\CodePilot-main\\\\CodePilot-main\\\" && npx vitest src/__tests__/unit/inference-integration.test.ts --run\"}",
-  "error": "Exit code 1\n\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.0.18 \u001b[39m\u001b[90mC:/Users/ljyih/Desktop/liangjie/CodePilot-main/CodePilot-main\u001b[39m\n\n \u001b[31m❯\u001b[39m src/__tests__/unit/inference-integration.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[31m1 failed\u001b[39m\u001b[2m)\u001b[22m\u001b[32m 49\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[32m✓\u001b[39m should generate code embedding\u001b[32m 45\u001b[2mms\u001b[22m\u001b[39m\n\u001b[31m     \u001b[31m×\u001b[31m should use cache for repeated requests\u001b[39m\u001b[32m 3\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[31m⎯⎯⎯⎯⎯⎯⎯\u001b[39m\u001b[1m\u001b[41m Failed Tests 1 \u001b[49m\u001b[22m\u001b[31...",
-  "timestamp": "2026-03-05T02:14:49.683Z",
-  "retry_count": 2
+  "tool_input_preview": "{\"command\":\"cd \\\"C:\\\\Users\\\\ljyih\\\\Desktop\\\\liangjie\\\\CodePilot-main\\\\CodePilot-main\\\" && cat next.config.js\",\"description\":\"Check Next.js config\"}",
+  "error": "Exit code 1\ncat: next.config.js: No such file or directory\n\ncat: next.config.js: No such file or directory",
+  "timestamp": "2026-03-05T04:17:31.347Z",
+  "retry_count": 1
 }
