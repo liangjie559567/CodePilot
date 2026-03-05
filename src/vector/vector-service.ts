@@ -1,13 +1,10 @@
 import { inferenceService } from '../inference/inference-service';
 import { TaskType } from '../inference/types';
 import { FAISSIndex } from './faiss-index';
-import * as fs from 'fs/promises';
-import * as path from 'path';
 
 export class VectorService {
   private static instance: VectorService;
   private index = new FAISSIndex();
-  private indexPath = path.join(process.cwd(), 'data', 'vector-index.json');
 
   private constructor() {}
 
@@ -19,11 +16,7 @@ export class VectorService {
   }
 
   async initialize(): Promise<void> {
-    try {
-      await this.load();
-    } catch {
-      // Index doesn't exist yet
-    }
+    // No-op for now
   }
 
   async addDocument(text: string, filePath: string): Promise<void> {
@@ -54,16 +47,6 @@ export class VectorService {
       return actualK > 0 ? this.index.search(result.output, actualK) : [];
     }
     return [];
-  }
-
-  async save(): Promise<void> {
-    await fs.mkdir(path.dirname(this.indexPath), { recursive: true });
-    await fs.writeFile(this.indexPath, JSON.stringify(this.index.serialize()));
-  }
-
-  async load(): Promise<void> {
-    const data = await fs.readFile(this.indexPath, 'utf-8');
-    this.index.deserialize(JSON.parse(data));
   }
 
   size(): number {
