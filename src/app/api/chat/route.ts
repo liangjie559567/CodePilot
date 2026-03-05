@@ -2,7 +2,6 @@ import { NextRequest } from 'next/server';
 import { streamClaude } from '@/lib/claude-client';
 import { addMessage, getMessages, getSession, updateSessionTitle, updateSdkSessionId, updateSessionModel, updateSessionProvider, updateSessionProviderId, getSetting, getProvider, getDefaultProviderId, acquireSessionLock, renewSessionLock, releaseSessionLock, setSessionRuntimeStatus, syncSdkTasks, getParseResults } from '@/lib/db';
 import { notifySessionStart, notifySessionComplete, notifySessionError } from '@/lib/telegram-bot';
-import { codeParseManager } from '@/lib/code-parse-manager';
 import type { SendMessageRequest, SSEEvent, TokenUsage, MessageContentBlock, FileAttachment } from '@/types';
 import { logger } from '@/lib/logger';
 import crypto from 'crypto';
@@ -40,6 +39,7 @@ export async function POST(request: NextRequest) {
 
     // Start monitoring if not already started
     if (session.working_directory) {
+      const { codeParseManager } = await import('@/lib/code-parse-manager');
       codeParseManager.startMonitoring(session.working_directory, session_id);
     }
 
