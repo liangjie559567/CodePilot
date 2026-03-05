@@ -10,15 +10,19 @@ export interface CodeSearchRequest {
 }
 
 export const codeIntelligenceAPI = {
-  analyzeCode: (req: CodeAnalysisRequest) =>
-    window.electron.ipcRenderer.invoke('code:analyze', req),
+  analyzeCode: async (_req: CodeAnalysisRequest) => {
+    throw new Error('Code intelligence features are not yet implemented');
+  },
 
-  searchCode: (req: CodeSearchRequest) =>
-    window.electron.ipcRenderer.invoke('code:search', req),
+  searchCode: async (_req: CodeSearchRequest) => {
+    throw new Error('Code intelligence features are not yet implemented');
+  },
 
-  completeCode: (code: string) =>
-    window.electron.ipcRenderer.invoke('code:complete', code),
+  completeCode: async (_code: string) => {
+    throw new Error('Code intelligence features are not yet implemented');
+  },
 
-  summarizeCode: (code: string) =>
-    window.electron.ipcRenderer.invoke('code:summarize', code),
+  summarizeCode: async (_code: string) => {
+    throw new Error('Code intelligence features are not yet implemented');
+  },
 };
