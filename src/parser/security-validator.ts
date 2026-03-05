@@ -61,7 +61,7 @@ export function validateFilePath(filePath: string): void {
   }
 
   const ext = path.extname(filePath);
-  if (ext && !SECURITY_LIMITS.ALLOWED_EXTENSIONS.includes(ext)) {
+  if (ext && !SECURITY_LIMITS.ALLOWED_EXTENSIONS.includes(ext as any)) {
     throw new SecurityValidationError(
       `File extension ${ext} is not allowed`,
       'INVALID_EXTENSION',
