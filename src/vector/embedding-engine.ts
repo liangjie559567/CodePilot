@@ -17,7 +17,7 @@ async function getEmbedder() {
 export async function generateEmbedding(text: string): Promise<number[]> {
   const model = await getEmbedder();
   const output = await model(text, { pooling: 'mean', normalize: true });
-  const vector = Array.from(output.data);
+  const vector = Array.from(output.data) as number[];
   validateVector(vector);
   return vector;
 }
