@@ -40,6 +40,9 @@ extraResources:
   - from: build/
     to: .
     filter: ["icon.*"]
+  - from: models/
+    to: models/
+    filter: ["**/*.onnx"]
 afterPack: scripts/after-pack.js
 afterSign: scripts/after-sign.js
 asarUnpack:
@@ -88,6 +91,3 @@ linux:
       arch: [x64, arm64]
     - target: rpm
       arch: [x64, arm64]
-  - from: models/
-    to: models/
-    filter: ["**/*.onnx"]
