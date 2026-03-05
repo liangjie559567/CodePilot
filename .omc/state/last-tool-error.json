@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd \\\"C:\\\\Users\\\\ljyih\\\\Desktop\\\\liangjie\\\\CodePilot-main\\\\CodePilot-main\\\" && cat next.config.js\",\"description\":\"Check Next.js config\"}",
-  "error": "Exit code 1\ncat: next.config.js: No such file or directory\n\ncat: next.config.js: No such file or directory",
-  "timestamp": "2026-03-05T04:17:31.347Z",
+  "tool_input_preview": "{\"command\":\"cd \\\"C:\\\\Users\\\\ljyih\\\\Desktop\\\\liangjie\\\\CodePilot-main\\\\CodePilot-main\\\" && npm test src/__tests__/lib/code-intelligence.test.ts\"}",
+  "error": "Exit code 1\n\n> codepilot@0.24.8 test\n> vitest src/__tests__/lib/code-intelligence.test.ts\n\n'vitest' �����ڲ����ⲿ���Ҳ���ǿ����еĳ���\r\n���������ļ���\r\n\n\n> codepilot@0.24.8 test\n> vitest src/__tests__/lib/code-intelligence.test.ts\n\n'vitest' �����ڲ����ⲿ���Ҳ���ǿ����еĳ���\r\n���������ļ���",
+  "timestamp": "2026-03-05T04:51:24.103Z",
   "retry_count": 1
 }
