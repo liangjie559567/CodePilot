@@ -14,11 +14,10 @@ export enum TaskStatus {
 
 export interface Task {
   id: string;
-  name: string;
-  priority: TaskPriority;
+  priority: number;
   status: TaskStatus;
   execute: () => Promise<void>;
-  createdAt: number;
+  dependencies?: string[];
 }
 
 export interface ResourceMetrics {
