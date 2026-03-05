@@ -1,13 +1,8 @@
-/**
- * FAISS Index - HNSW vector search
- */
-
 import { IndexFlatL2 } from 'faiss-node';
 
 export class FAISSIndex {
   private index: IndexFlatL2;
   private dimension = 768;
-  private vectors: number[][] = [];
   private metadata: Array<{ filePath: string; text: string }> = [];
 
   constructor() {
@@ -16,7 +11,6 @@ export class FAISSIndex {
 
   add(vector: number[], filePath: string, text: string): void {
     this.index.add(vector);
-    this.vectors.push(vector);
     this.metadata.push({ filePath, text });
   }
 
@@ -30,5 +24,13 @@ export class FAISSIndex {
 
   size(): number {
     return this.metadata.length;
+  }
+
+  serialize() {
+    return { metadata: this.metadata };
+  }
+
+  deserialize(data: { metadata: Array<{ filePath: string; text: string }> }) {
+    this.metadata = data.metadata;
   }
 }
