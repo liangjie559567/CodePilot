@@ -776,8 +776,8 @@ export function streamClaude(options: ClaudeStreamOptions): ReadableStream<strin
                       ? block.content
                       : Array.isArray(block.content)
                         ? block.content
-                            .filter((c: { type: string }) => c.type === 'text')
-                            .map((c: { text: string }) => c.text)
+                            .filter((c): c is { type: 'text'; text: string } => c.type === 'text')
+                            .map((c) => c.text)
                             .join('\n')
                         : String(block.content ?? '');
                     controller.enqueue(formatSSE({
