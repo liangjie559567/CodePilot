@@ -1,4 +1,4 @@
-import chokidar from 'chokidar';
+import chokidar, { type FSWatcher } from 'chokidar';
 import { EventEmitter } from 'events';
 
 export interface FileWatcherConfig {
@@ -8,7 +8,7 @@ export interface FileWatcherConfig {
 }
 
 export class FileWatcherService extends EventEmitter {
-  private watcher: chokidar.FSWatcher | null = null;
+  private watcher: FSWatcher | null = null;
 
   start(config: FileWatcherConfig): void {
     const { projectRoot, ignored = [], extensions = ['.ts', '.tsx', '.js', '.jsx', '.py'] } = config;
