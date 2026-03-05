@@ -4,7 +4,6 @@ import { execFileSync, spawn, ChildProcess } from 'child_process';
 import fs from 'fs';
 import net from 'net';
 import os from 'os';
-import { registerCodeIntelligenceHandlers, initializeCodeIntelligence } from './ipc-handlers';
 
 let mainWindow: BrowserWindow | null = null;
 let serverProcess: Electron.UtilityProcess | null = null;
@@ -554,14 +553,6 @@ app.whenReady().then(async () => {
     app.dock.setIcon(nativeImage.createFromPath(iconPath));
   }
 
-  // Initialize Code Intelligence API
-  try {
-    await initializeCodeIntelligence();
-    registerCodeIntelligenceHandlers();
-    console.log('Code Intelligence API initialized');
-  } catch (err) {
-    console.error('Failed to initialize Code Intelligence:', err);
-  }
 
   // --- Install wizard IPC handlers ---
 
