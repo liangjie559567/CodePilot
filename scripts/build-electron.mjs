@@ -28,7 +28,7 @@ async function buildElectron() {
     bundle: true,
     platform: 'node',
     target: 'node18',
-    external: ['electron'],
+    external: ['electron', 'onnxruntime-node', 'sharp'],
     sourcemap: true,
     minify: false,
   };
