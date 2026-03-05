@@ -1,5 +1,6 @@
 appId: com.codepilot.app
 productName: CodePilot
+npmRebuild: false
 publish:
   provider: github
   owner: op7418
