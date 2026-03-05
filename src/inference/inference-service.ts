@@ -1,19 +1,13 @@
-import { ModelRegistry } from './model-registry';
-import { ModelLoader } from './model-loader';
-import { InferenceEngine } from './inference-engine';
-import { TaskRouter } from './task-router';
-import { ResultCache } from './result-cache';
-import { modelDownloader } from './model-downloader';
-import { CODET5_MODELS } from './models/codet5-config';
 import { ModelConfig, InferenceRequest, InferenceResult, TaskType, ModelTier } from './types';
 
 export class InferenceService {
   private static instance: InferenceService;
-  private registry = new ModelRegistry();
-  private loader = new ModelLoader();
-  private engine = new InferenceEngine();
-  private router = new TaskRouter(this.registry);
-  private cache = new ResultCache();
+  private initialized = false;
+  private registry: any;
+  private loader: any;
+  private engine: any;
+  private router: any;
+  private cache: any;
 
   private constructor() {}
 
@@ -24,60 +18,50 @@ export class InferenceService {
     return InferenceService.instance;
   }
 
-  registerModel(config: ModelConfig): void {
-    this.registry.register(config);
-  }
-
   async initialize(): Promise<void> {
-    const fastModel: ModelConfig = {
-      id: 'fast-embedding',
-      name: 'Fast Embedding',
-      path: 'models/onnx/code-embedding.onnx',
-      taskTypes: [TaskType.CODE_EMBEDDING, TaskType.CODE_COMPLETION, TaskType.CODE_SUMMARY],
-      tier: ModelTier.FAST,
-      inputShape: [1, 512],
-      outputShape: [1, 768],
-      quantized: false,
-      maxTokens: 512,
-    };
+    if (this.initialized) return;
+    
+    try {
+      const { ModelRegistry } = await import('./model-registry');
+      const { ModelLoader } = await import('./model-loader');
+      const { InferenceEngine } = await import('./inference-engine');
+      const { TaskRouter } = await import('./task-router');
+      const { ResultCache } = await import('./result-cache');
 
-    const standardModel: ModelConfig = {
-      id: 'codebert-base',
-      name: 'CodeBERT Base',
-      path: 'models/codebert/model.onnx',
-      taskTypes: [TaskType.CODE_COMPLETION, TaskType.CODE_SUMMARY],
-      tier: ModelTier.STANDARD,
-      inputShape: [1, 512],
-      outputShape: [1, 768],
-      quantized: false,
-      maxTokens: 512,
-    };
+      this.registry = new ModelRegistry();
+      this.loader = new ModelLoader();
+      this.engine = new InferenceEngine();
+      this.router = new TaskRouter(this.registry);
+      this.cache = new ResultCache();
 
-    const premiumModel: ModelConfig = {
-      id: 'codebert-large',
-      name: 'CodeBERT Large',
-      path: 'models/codebert/model.onnx',
-      taskTypes: [TaskType.CODE_COMPLETION, TaskType.CODE_SUMMARY],
-      tier: ModelTier.PREMIUM,
-      inputShape: [1, 512],
-      outputShape: [1, 768],
-      quantized: false,
-      maxTokens: 512,
-    };
+      const fastModel: ModelConfig = {
+        id: 'fast-embedding',
+        name: 'Fast Embedding',
+        path: 'models/onnx/code-embedding.onnx',
+        taskTypes: [TaskType.CODE_EMBEDDING],
+        tier: ModelTier.FAST,
+        inputShape: [1, 512],
+        outputShape: [1, 768],
+        quantized: false,
+        maxTokens: 512,
+      };
 
-    this.registry.register(fastModel);
-    this.registry.register(standardModel);
-    this.registry.register(premiumModel);
+      this.registry.register(fastModel);
+      this.initialized = true;
+    } catch (error) {
+      console.warn('Code intelligence features unavailable:', error);
+    }
   }
 
   async infer(request: InferenceRequest): Promise<InferenceResult> {
-    const startTime = Date.now();
+    if (!this.initialized) {
+      throw new Error('Inference service not initialized. Call initialize() first.');
+    }
 
+    const startTime = Date.now();
     const cacheKey = this.cache.generateKey(request);
     const cached = this.cache.get(cacheKey);
-    if (cached) {
-      return { ...cached, cached: true };
-    }
+    if (cached) return { ...cached, cached: true };
 
     const inputStr = typeof request.input === 'string' ? request.input : '';
     const modelId = this.router.selectModel({
@@ -86,14 +70,10 @@ export class InferenceService {
       latencyBudget: request.options?.latencyBudget,
     });
 
-    if (!modelId) {
-      throw new Error(`No model available for task: ${request.taskType}`);
-    }
+    if (!modelId) throw new Error(`No model available for task: ${request.taskType}`);
 
     const config = this.registry.get(modelId);
-    if (!config) {
-      throw new Error(`Model not found: ${modelId}`);
-    }
+    if (!config) throw new Error(`Model not found: ${modelId}`);
 
     const session = await this.loader.load(config);
     const inputTensor = this.engine.preprocess(request.input, config);
@@ -110,18 +90,8 @@ export class InferenceService {
     return result;
   }
 
-  async warmup(modelId: string): Promise<void> {
-    const config = this.registry.get(modelId);
-    if (!config) throw new Error(`Model not found: ${modelId}`);
-    await this.loader.load(config);
-  }
-
-  unloadModel(modelId: string): void {
-    this.loader.unload(modelId);
-  }
-
   dispose(): void {
-    this.cache.clear();
+    if (this.cache) this.cache.clear();
   }
 }
 
