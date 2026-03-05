@@ -10,10 +10,9 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_APP_VERSION: pkg.version,
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
+  experimental: {
+    turbo: {
+      resolveAlias: {
         fs: false,
         path: false,
         crypto: false,
@@ -21,9 +20,8 @@ const nextConfig: NextConfig = {
         buffer: false,
         util: false,
         os: false,
-      };
-    }
-    return config;
+      },
+    },
   },
 };
 
