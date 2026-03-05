@@ -89,6 +89,8 @@ jobs:
       - name: Package for macOS (x64 + arm64) - without signing
         if: env.HAS_CERT != 'true'
         timeout-minutes: 15
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
         run: npx electron-builder --mac --config electron-builder.yml --publish never
 
       - name: Verify code signature
