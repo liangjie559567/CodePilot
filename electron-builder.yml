@@ -88,3 +88,6 @@ linux:
       arch: [x64, arm64]
     - target: rpm
       arch: [x64, arm64]
+  - from: models/
+    to: models/
+    filter: ["**/*.onnx"]
