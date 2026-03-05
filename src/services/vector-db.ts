@@ -1,5 +1,3 @@
-'use server';
-
 interface VectorItem {
   id: string;
   vector: number[];

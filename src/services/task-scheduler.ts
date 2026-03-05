@@ -1,5 +1,3 @@
-'use server';
-
 interface Task {
   id: string;
   type: string;
@@ -37,7 +35,6 @@ class TaskSchedulerService {
     this.running.set(task.id, task);
 
     try {
-      // Process task based on type
       await this.executeTask(task);
       task.status = 'completed';
     } catch (error) {
@@ -48,7 +45,6 @@ class TaskSchedulerService {
   }
 
   private async executeTask(task: Task): Promise<void> {
-    // Task execution logic
     await new Promise(resolve => setTimeout(resolve, 100));
   }
 }

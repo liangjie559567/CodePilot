@@ -1,5 +1,3 @@
-'use server';
-
 interface InferenceRequest {
   prompt: string;
   context: string[];
@@ -22,13 +20,11 @@ class AIInferenceService {
     const start = Date.now();
     const cacheKey = `${req.prompt}_${req.modelId}`;
 
-    // Check cache
     const cached = this.cache.get(cacheKey);
     if (cached) {
       return { ...cached, cached: true };
     }
 
-    // Simple completion (mock for now)
     const completion = this.generateCompletion(req.prompt, req.context);
 
     const result: InferenceResponse = {
@@ -43,7 +39,6 @@ class AIInferenceService {
   }
 
   private generateCompletion(prompt: string, context: string[]): string {
-    // Simple pattern-based completion
     if (prompt.includes('function')) {
       return '{\n  // TODO: implement\n}';
     }

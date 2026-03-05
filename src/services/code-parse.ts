@@ -1,5 +1,3 @@
-'use server';
-
 interface ParseRequest {
   filePath: string;
   content: string;
@@ -22,7 +20,6 @@ class CodeParseService {
     const start = Date.now();
     const treeId = `tree_${Date.now()}`;
 
-    // Simple AST extraction (keywords and identifiers)
     const symbols = this.extractSymbols(req.content, req.language);
     const ast = { type: 'Program', body: symbols };
 
@@ -41,7 +38,6 @@ class CodeParseService {
   private extractSymbols(content: string, language: string) {
     const symbols: Array<{ name: string; kind: string; range: [number, number] }> = [];
 
-    // Extract functions
     const funcRegex = /(?:function|const|let|var)\s+(\w+)\s*[=\(]/g;
     let match;
     while ((match = funcRegex.exec(content)) !== null) {
@@ -52,7 +48,6 @@ class CodeParseService {
       });
     }
 
-    // Extract classes
     const classRegex = /class\s+(\w+)/g;
     while ((match = classRegex.exec(content)) !== null) {
       symbols.push({
