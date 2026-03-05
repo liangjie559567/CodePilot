@@ -643,7 +643,7 @@ export function streamClaude(options: ClaudeStreamOptions): ReadableStream<strin
                 })();
 
             const contentBlocks: Array<
-              | { type: 'image'; source: { type: 'base64'; media_type: string; data: string } }
+              | { type: 'image'; source: { type: 'base64'; media_type: 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'; data: string } }
               | { type: 'text'; text: string }
             > = [];
 
